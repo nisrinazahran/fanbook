@@ -1,8 +1,18 @@
 from flask import Flask, render_template, request, jsonify
 from pymongo import MongoClient
 
-client = MongoClient('mongodb://test:sparta@ac-rlfmp5k-shard-00-00.waymkxr.mongodb.net:27017,ac-rlfmp5k-shard-00-01.waymkxr.mongodb.net:27017,ac-rlfmp5k-shard-00-02.waymkxr.mongodb.net:27017/?ssl=true&replicaSet=atlas-yzrfcr-shard-0&authSource=admin&retryWrites=true&w=majority')
-db = client.fanbook
+import os
+from os.path import join, dirname
+from dotenv import load_dotenv
+
+dotenv_path = join(dirname(__file__), '.env')
+load_dotenv(dotenv_path)
+
+MONGODB_URL  = os.environ.get("MONGODB_URL")
+DBNAME =  os.environ.get("DBNAME")
+
+client = MongoClient(MONGODB_URL)
+db = client[DBNAME]
 
 app = Flask (__name__)
 
